@@ -123,5 +123,24 @@ namespace API.Services
 
             return result;
         }
+        /// <summary>
+        /// Deletes course with specific id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public void DeleteCourse(int id, CourseUpdateViewModel model)
+        {
+            var course = (from x in _db.Courses
+                          where x.ID == id
+                          select x).SingleOrDefault();
+            if (course == null)
+            {
+                throw new AppObjectNotFoundException();
+            }
+            _db.Courses.Remove(course);
+            _db.SaveChanges();
+        }
+   
     }
 }

@@ -24,7 +24,7 @@ namespace WebService.Controllers
             _service = new CoursesServiceProvider();
         }
 
-        [HttpGet]
+        [HttpPut]
         [Route("{id}")]
         public CourseDTO UpdateCourse(int id, CourseUpdateViewModel model)
         {
@@ -41,13 +41,16 @@ namespace WebService.Controllers
 
 
         }
+
+        [HttpGet]
+        [Route("")]
+
         public List<CourseDTO> GetCoursesBySemester(string semester = null)
         {
 
             return _service.GetCoursesBySemester(semester);
         }
-        [HttpPut]
-        [Route("")]
+
 
 
         [HttpGet]
@@ -85,6 +88,25 @@ namespace WebService.Controllers
                 return StatusCode(HttpStatusCode.PreconditionFailed);
             }
         }
+        /// <summary>
+        /// Removes selected course
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="model"></param>
+        [HttpDelete]
+        [Route("{id}")]
+        public void DeleteCourse(int id, CourseUpdateViewModel model)
+        {
+            try
+            {
+                _service.DeleteCourse(id, model);
+            }
+            catch (AppObjectNotFoundException)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+        }
+        
         /*
         //Lists that contain the courses and students 
         private static List<Courses> courses;
